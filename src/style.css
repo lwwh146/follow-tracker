@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom premium transitions and styles */
+@layer utilities {
+  .tap-highlight-transparent {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Animations for card list */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(15px) scale(0.95);
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.list-move {
+  transition: transform 0.3s ease;
+}
+
+/* Light theme friendly scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* slate-300 */
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* slate-400 */
+}
