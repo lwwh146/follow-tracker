@@ -17,8 +17,19 @@ const inputAccountId = ref('')
 const isSubmitting = ref(false)
 const isLoading = ref(false)
 const inputRef = ref(null)
+const dateInputRef = ref(null)
 const searchQuery = ref('')
 const selectedDate = ref('') // Stores date in 'YYYY-MM-DD' format
+
+const showDatePicker = () => {
+  if (dateInputRef.value && typeof dateInputRef.value.showPicker === 'function') {
+    try {
+      dateInputRef.value.showPicker()
+    } catch (err) {
+      console.warn('HTML5 showPicker error:', err)
+    }
+  }
+}
 
 // Toast Notification State
 const toast = ref({
@@ -439,11 +450,21 @@ VITE_SUPABASE_ANON_KEY=你的AnonKey</pre>
 
       <!-- Date Input Picker with Reset Button -->
       <div class="flex items-center gap-1 shrink-0">
-        <input 
-          v-model="selectedDate"
-          type="date"
-          class="h-9 px-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none focus:border-slate-300 transition-all cursor-pointer"
-        />
+        <div class="relative shrink-0 flex items-center">
+          <input 
+            ref="dateInputRef"
+            v-model="selectedDate"
+            type="date"
+            @click="showDatePicker"
+            class="h-9 px-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none focus:border-slate-300 transition-all cursor-pointer w-28 text-center"
+          />
+          <div 
+            v-if="!selectedDate"
+            class="absolute inset-0 flex items-center justify-center pointer-events-none text-xs font-semibold text-slate-400 bg-white rounded-xl border border-slate-200"
+          >
+            📅 日期
+          </div>
+        </div>
         <button 
           v-if="selectedDate" 
           @click="selectedDate = ''"
@@ -556,10 +577,10 @@ VITE_SUPABASE_ANON_KEY=你的AnonKey</pre>
               <time class="text-[10px] text-slate-400 font-medium" :datetime="record.created_at">
                 {{ formatRelativeTime(record.created_at) }}
               </time>
-              <!-- Small discreet delete icon -->
+              <!-- Permanent delete button for mobile -->
               <button 
                 @click="handleDeleteRecord(record.id)"
-                class="opacity-0 group-hover:opacity-100 focus:opacity-100 text-slate-300 hover:text-rose-500 p-1 rounded transition-opacity text-xs tap-highlight-transparent"
+                class="text-slate-400 p-1 rounded text-xs tap-highlight-transparent"
                 title="删除记录"
               >
                 🗑️
