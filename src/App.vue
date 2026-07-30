@@ -253,6 +253,19 @@ const formatRelativeTime = (timestamp) => {
   }
 };
 
+// Full date-time formatting (YYYY-MM-DD HH:mm:ss)
+const formatFullDateTime = (timestamp) => {
+  if (!timestamp) return "";
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  const second = String(date.getSeconds()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};
+
 // Convert UTC created_at to local YYYY-MM-DD string
 const getLocalDateString = (isoString) => {
   if (!isoString) return "";
@@ -642,7 +655,7 @@ VITE_SUPABASE_ANON_KEY=你的AnonKey</pre
                 class="text-[10px] text-slate-400 font-medium"
                 :datetime="record.created_at"
               >
-                {{ formatRelativeTime(record.created_at) }}
+                {{ formatFullDateTime(record.created_at) }}
               </time>
               <!-- Permanent delete button for mobile -->
               <button
